@@ -52,6 +52,8 @@ setup(
         "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX :: Linux",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS",
     ],
     project_urls={
         "Documentation": "https://github.com/ByteXenon/undetected_geckodriver#readme",
