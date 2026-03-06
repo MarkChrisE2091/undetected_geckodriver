@@ -15,6 +15,7 @@ from .constants import TO_REPLACE_STRING
 from .mixins import WebDriverMixin
 from .utils import (
     generate_random_string,
+    get_platform_cache_path,
     get_platform_dependent_params,
     get_webdriver_instance,
 )
@@ -67,16 +68,36 @@ class Firefox(RemoteWebDriver, WebDriverMixin):
 
         self._is_remote = False
 
+    def _is_valid_installation_path(self, installation_path: str) -> bool:
+        """Check whether installation path contains the required XUL file."""
+        xul: str = self._platform_dependent_params["xul"]
+        return os.path.exists(os.path.join(installation_path, xul))
+
+    def _resolve_installation_path_from_binary(self, binary_dir: str) -> str:
+        """Resolve Firefox installation root from an executable directory."""
+        candidates = [binary_dir]
+        parent = os.path.dirname(binary_dir)
+        if parent and parent not in candidates:
+            candidates.append(parent)
+        grandparent = os.path.dirname(parent)
+        if grandparent and grandparent not in candidates:
+            candidates.append(grandparent)
+
+        for candidate in candidates:
+            if self._is_valid_installation_path(candidate):
+                return candidate
+
+        return binary_dir
+
     def _get_firefox_installation_path(self) -> str:
         """
         Unlike _get_binary_location, this method returns the path to the
         directory containing the Firefox binary and its libraries.
-        Normally, it's located in `/usr/lib/firefox`.
         """
 
         firefox_paths: list = self._platform_dependent_params["firefox_paths"]
         for path in firefox_paths:
-            if os.path.exists(path):
+            if os.path.exists(path) and self._is_valid_installation_path(path):
                 return path
 
         # Fixes #4
@@ -84,25 +105,23 @@ class Firefox(RemoteWebDriver, WebDriverMixin):
         # Firefox, checking its process path, and then killing it using psutil.
         # This is a last resort method, and might slow down the initialization.
         for firefox_exec in self._platform_dependent_params["firefox_execs"]:
-            if shutil.which(firefox_exec):
+            executable_name = os.path.basename(firefox_exec)
+            if shutil.which(executable_name):
                 process = psutil.Popen(
-                    [firefox_exec, "--headless", "--new-instance"],
+                    [executable_name, "--headless", "--new-instance"],
                     stdout=psutil.subprocess.DEVNULL,
                     stderr=psutil.subprocess.DEVNULL,
                 )
                 time.sleep(0.1)  # Wait for the process to truly start
                 process_dir = os.path.dirname(process.exe())
-                # Kill the process
                 process.kill()
-                return process_dir
+                return self._resolve_installation_path_from_binary(process_dir)
 
         raise FileNotFoundError("Could not find Firefox installation path")
 
     def _get_undetected_firefox_path(self) -> str:
         """Get the path for the undetected Firefox."""
-        return self._platform_dependent_params["undetected_path"].format(
-            USER=os.getlogin()
-        )
+        return get_platform_cache_path()
 
     def _create_undetected_firefox_directory(self) -> str:
         """Create a directory for the undetected Firefox if it doesn't exist."""

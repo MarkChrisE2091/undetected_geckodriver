@@ -23,7 +23,7 @@ A Python package that integrates with Firefox Selenium to bypass anti-bot detect
 ## Overview
 
 > [!NOTE]
-> Currently, this package only supports Linux. Support for Windows and macOS is planned for future releases.
+> This package supports Linux, Windows, and macOS.
 
 Undetected GeckoDriver is a powerful Python package designed to work seamlessly with the [Selenium](https://github.com/SeleniumHQ/selenium) browser automation framework. Selenium allows you to control web browsers through code, making it an essential tool for web scraping, automated testing, and browser automation. However, when browsers are controlled by scripts (often referred to as "puppet browsers"), they typically set specific properties that can be detected by anti-bot services like Cloudflare. For instance, properties such as `navigator.webdriver` can be checked using JavaScript, which may restrict access to content on sites protected by such services.
 
@@ -136,7 +136,7 @@ While undetected-chromedriver is a great tool for bypassing bot detection mechan
 
 **In Progress:**
 
-- [ ] **Multi-platform support**: Extend the compatibility of the tool to work seamlessly across different operating systems other than Linux (Windows, macOS). This includes ensuring all dependencies and configurations are platform-independent.
+- [x] **Multi-platform support**: Extend the compatibility of the tool to work seamlessly across different operating systems other than Linux (Windows, macOS). This includes ensuring all dependencies and configurations are platform-independent.
 
 **Planned:**
 
