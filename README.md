@@ -23,7 +23,7 @@ A Python package that integrates with Firefox Selenium to bypass anti-bot detect
 ## Overview
 
 > [!NOTE]
-> Currently, this package only supports Linux. Support for Windows and macOS is planned for future releases.
+> This package supports Linux, Windows, and macOS.
 
 Undetected GeckoDriver is a powerful Python package designed to work seamlessly with the [Selenium](https://github.com/SeleniumHQ/selenium) browser automation framework. Selenium allows you to control web browsers through code, making it an essential tool for web scraping, automated testing, and browser automation. However, when browsers are controlled by scripts (often referred to as "puppet browsers"), they typically set specific properties that can be detected by anti-bot services like Cloudflare. For instance, properties such as `navigator.webdriver` can be checked using JavaScript, which may restrict access to content on sites protected by such services.
 
@@ -36,13 +36,14 @@ This makes it possible to interact with websites without being detected as a bot
 
 ## Installation
 
-You can install the package via pip:
+1. Install Firefox for your operating system.
+2. Install this package:
 
 ```bash
 pip install undetected-geckodriver
 ```
 
-Or you can install it from source:
+Or install from source:
 
 ```bash
 git clone https://github.com/bytexenon/undetected_geckodriver
@@ -50,8 +51,21 @@ cd undetected_geckodriver
 pip install .
 ```
 
+3. In your code, import the patched Firefox driver from this package and keep your normal Selenium `Options` / `Service` imports:
+
+```python
+from undetected_geckodriver import Firefox
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
+```
+
+4. Replace `webdriver.Firefox(...)` with `Firefox(...)`.
+
+> [!IMPORTANT]
+> You generally do not need `webdriver_manager.firefox.GeckoDriverManager` with this package. Let Selenium/Service resolve the geckodriver unless you have a custom enterprise setup.
+
 > [!NOTE]
-> The last installation method is not recommended unless you are planning to contribute to the project. For regular usage, it is recommended to install the package via regular pip installation.
+> The source installation method is mainly for contributors. For regular usage, install from PyPI.
 
 ## Usage
 
@@ -136,7 +150,7 @@ While undetected-chromedriver is a great tool for bypassing bot detection mechan
 
 **In Progress:**
 
-- [ ] **Multi-platform support**: Extend the compatibility of the tool to work seamlessly across different operating systems other than Linux (Windows, macOS). This includes ensuring all dependencies and configurations are platform-independent.
+- [x] **Multi-platform support**: Extend the compatibility of the tool to work seamlessly across different operating systems other than Linux (Windows, macOS). This includes ensuring all dependencies and configurations are platform-independent.
 
 **Planned:**
 
