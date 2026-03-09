@@ -37,13 +37,13 @@ This makes it possible to interact with websites without being detected as a bot
 ## Installation
 
 1. Install Firefox for your operating system.
-2. Install this package:
+2. Install this package from the permanent fork:
 
 ```bash
-pip install undetected-geckodriver
+pip install git+https://github.com/bytexenon/undetected_geckodriver.git
 ```
 
-Or install from source:
+Or clone and install from source:
 
 ```bash
 git clone https://github.com/bytexenon/undetected_geckodriver
@@ -65,7 +65,7 @@ from selenium.webdriver.firefox.service import Service
 > You generally do not need `webdriver_manager.firefox.GeckoDriverManager` with this package. Let Selenium/Service resolve the geckodriver unless you have a custom enterprise setup.
 
 > [!NOTE]
-> The source installation method is mainly for contributors. For regular usage, install from PyPI.
+> This repository (`https://github.com/bytexenon/undetected_geckodriver`) is the permanent fork and the canonical source for installation and updates.
 
 ## Usage
 
