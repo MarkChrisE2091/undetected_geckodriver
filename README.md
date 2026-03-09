@@ -37,7 +37,7 @@ This makes it possible to interact with websites without being detected as a bot
 ## Installation
 
 1. Install Firefox for your operating system.
-2. Install this package from the permanent fork:
+2. Install this package:
 
 ```bash
 pip install git+https://github.com/bytexenon/undetected_geckodriver.git
