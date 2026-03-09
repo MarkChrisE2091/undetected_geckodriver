@@ -2,6 +2,7 @@
 import platform
 import random
 import string
+from pathlib import Path
 
 from selenium import webdriver
 
@@ -25,3 +26,9 @@ def generate_random_string(length: int) -> str:
     return "".join(
         random.choice(string.ascii_letters + string.digits) for _ in range(length)
     )
+
+
+def get_platform_cache_path() -> str:
+    params = get_platform_dependent_params()
+    return str(Path.home() / params["undetected_path"])
+

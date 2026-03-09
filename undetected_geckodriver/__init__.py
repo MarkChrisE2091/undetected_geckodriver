@@ -12,7 +12,12 @@
 # Imports #
 import importlib.metadata
 
-from .driver import Firefox
+from .driver import Firefox as Firefox
 
 # Constants #
-__version__ = importlib.metadata.version("undetected-geckodriver")
+try:
+    __version__ = importlib.metadata.version("undetected-geckodriver")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "0.0.0"
+
+__all__ = ["Firefox", "__version__"]
